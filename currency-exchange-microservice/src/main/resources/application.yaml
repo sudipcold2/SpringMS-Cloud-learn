@@ -1,0 +1,58 @@
+%YAML 1.2
+---
+server:
+  port: 8000
+
+spring:
+  application:
+    name: currency-exchange
+  jpa:
+    show-sql: true
+  datasource:
+    url: jdbc:h2:mem:testdb
+  h2:
+    console:
+      enabled: true
+  sleuth:
+    sampler:
+      probability: 1.0
+
+#spring:
+#  zipkin:
+#    base-url: http://localhost:9411/
+
+#  zipkin:
+#  sender:
+#    type: rabbit
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka
+
+resilience4j:
+  retry:
+    instances:
+      sample-api:
+        maxRetryAttempts: 5
+        waitDuration: 2s
+        enableExponentialBackoff: true
+
+  ratelimiter:
+    instances:
+      rate-limit-instance:
+        limitForPeriod: 2
+        limitRefreshPeriod: 10s
+
+  bulkhead:
+    instances:
+      bulkHeadInstance:
+        maxConcurrentCalls: 1
+
+
+
+
+
+
+
+
